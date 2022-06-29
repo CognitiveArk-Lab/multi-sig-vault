@@ -106,11 +106,6 @@ pub mod vault {
             return Err(ErrorCode::AlreadySigned.into());
         }
 
-        let balance = **vault_account.lamports.borrow();
-        if balance <= proposal.amount {
-            return Err(ErrorCode::InsufficientSolToWithdraw.into());
-        }
-
         proposal.signed[index] = true;
         let mut approved = 0;
         for i in 0..4 {
@@ -118,8 +113,11 @@ pub mod vault {
                 approved += 1;
             }
         }
-        /*
         if approved == THRESHOLD {
+            let balance = **vault_account.lamports.borrow();
+            if balance <= proposal.amount {
+                return Err(ErrorCode::InsufficientSolToWithdraw.into());
+            }
             **vault_account.lamports.borrow_mut() -= proposal.amount;
             **recipient.try_borrow_mut_lamports()? += proposal.amount;
             for i in 0..proposals.created.len() {
@@ -132,7 +130,6 @@ pub mod vault {
 
             proposal.close(signer.to_account_info());
         }
-        */
         Ok(())
     }
 }
