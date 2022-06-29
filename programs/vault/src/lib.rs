@@ -75,6 +75,7 @@ pub mod vault {
             if proposals.created[i] == proposal.id {
                 proposals.created[i] = proposals.created[proposals.created.len() - 1];
                 proposals.created.pop();
+                break;
             }
         }
         proposal.close(signer.to_account_info());
@@ -124,6 +125,7 @@ pub mod vault {
                 if proposals.created[i] == proposal.id {
                     proposals.created[i] = proposals.created[proposals.created.len() - 1];
                     proposals.created.pop();
+                    break;
                 }
             }
 
