@@ -8,11 +8,12 @@ declare_id!("DuSLYU4UZDp9KQPqmWGxcbXNtVHQRX7CbfKCaxjjXfPg");
 
 mod constants {
     use solana_program::{pubkey, pubkey::Pubkey};
-    pub const ADMIN_WALLET1: Pubkey = pubkey!("7EGWwj35r6sd4ERZMU2CGoTFL1ZuoUNup8DhxFyr6UPf");
-    pub const ADMIN_WALLET2: Pubkey = pubkey!("3rgWEviKxXxEjbLnSQCreVNRhgx2QgHtVnVbh8ZjPgix");
-    pub const ADMIN_WALLET3: Pubkey = pubkey!("EvKcFuJ63k2AVdg6fjee36JtPsq7RzQpvgb2wyX3gjrh");
-    pub const ADMIN_WALLET4: Pubkey = pubkey!("5wQ4XdFbzFbRppW8if8iJwaK1qUkjhpxmTq7WJrWMYjh");
-    pub const THRESHOLD: u8 = 3;
+    pub const ADMIN_WALLET1: Pubkey = pubkey!("4Z5xV1XsSQUyTXWY1UrfRHvg2H828Seua6SfAZ34oSze");
+    pub const ADMIN_WALLET2: Pubkey = pubkey!("2Rc32LnESWkgvGpDhKnWUsuCy2THHFm4ofaDzR7fTL4t");
+    pub const ADMIN_WALLET3: Pubkey = pubkey!("4e69d5pNaGudkgsrfRBaDhF2dScdGyRtxBjDBq3fGSNM");
+    pub const ADMIN_WALLET4: Pubkey = pubkey!("8H7Lfu8p4p762fPvFGh6pJfHHEuFVw6ynQXie85TGW3H");
+    pub const ADMIN_WALLET5: Pubkey = pubkey!("9MDCiokkgs9vkv7GZoPDc6BoE8CaQm5ZQcDsQCPNZpQm");
+    pub const THRESHOLD: u8 = 5;
 }
  
 #[program]
@@ -49,12 +50,14 @@ pub mod vault {
             index = 2;
         } else if signer.key().to_bytes() == ADMIN_WALLET4.to_bytes() {
             index = 3;
+        } else if signer.key().to_bytes() == ADMIN_WALLET5.to_bytes() {
+            index = 4;
         } else {
             return Err(ErrorCode::NotAdmin.into());
         }
 
         proposal.creator = signer.key();
-        let mut signed = [false, false, false, false];
+        let mut signed = [false, false, false, false, false];
         signed[index] = true;
         proposal.id = id;
         proposal.signed = signed;
@@ -98,6 +101,8 @@ pub mod vault {
             index = 2;
         } else if signer.key().to_bytes() == ADMIN_WALLET4.to_bytes() {
             index = 3;
+        } else if signer.key().to_bytes() == ADMIN_WALLET5.to_bytes() {
+            index = 4;
         } else {
             return Err(ErrorCode::NotAdmin.into());
         }
@@ -108,7 +113,7 @@ pub mod vault {
 
         proposal.signed[index] = true;
         let mut approved = 0;
-        for i in 0..4 {
+        for i in 0..5 {
             if proposal.signed[i] == true {
                 approved += 1;
             }
@@ -174,7 +179,7 @@ pub struct CreateProposal<'info> {
 
 #[derive(Accounts)]
 pub struct CancelProposal<'info> {
-    #[account(mut, constraint = (signer.key() == ADMIN_WALLET1 || signer.key() == ADMIN_WALLET2 || signer.key() == ADMIN_WALLET3 || signer.key() == ADMIN_WALLET4))]
+    #[account(mut, constraint = (signer.key() == ADMIN_WALLET1 || signer.key() == ADMIN_WALLET2 || signer.key() == ADMIN_WALLET3 || signer.key() == ADMIN_WALLET4 || signer.key() == ADMIN_WALLET5))]
     pub signer: Signer<'info>,
     #[account(mut)]
     /// CHECK:
@@ -186,7 +191,7 @@ pub struct CancelProposal<'info> {
 
 #[derive(Accounts)]
 pub struct ClaimContext<'info> {
-    #[account(mut, constraint = (signer.key() == ADMIN_WALLET1 || signer.key() == ADMIN_WALLET2 || signer.key() == ADMIN_WALLET3 || signer.key() == ADMIN_WALLET4))]
+    #[account(mut, constraint = (signer.key() == ADMIN_WALLET1 || signer.key() == ADMIN_WALLET2 || signer.key() == ADMIN_WALLET3 || signer.key() == ADMIN_WALLET4 || signer.key() == ADMIN_WALLET5))]
     pub signer: Signer<'info>,
     #[account(mut)]
     /// CHECK:
@@ -227,7 +232,7 @@ pub struct Proposals {
 pub struct Proposal {
     pub id: u8,
     pub creator: Pubkey,
-    pub signed: [bool;4],
+    pub signed: [bool;5],
     pub recipient: Pubkey,
     pub amount: u64,
 }
