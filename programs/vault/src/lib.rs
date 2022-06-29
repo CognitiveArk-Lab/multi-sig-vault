@@ -4,7 +4,7 @@ use anchor_lang::{AnchorSerialize, AnchorDeserialize, Account};
 use borsh::{BorshSerialize, BorshDeserialize};
 use crate::constants::*;
 
-declare_id!("6aFJ4vfULUALfAzpDTGbT3CpbpEbZHr1Yvv26uRHUyB7");
+declare_id!("4cQPdtKUkXywQ7johW6XxY5w8TPU3ECi45a2JRXGFQzw");
 
 mod constants {
     use solana_program::{pubkey, pubkey::Pubkey};
