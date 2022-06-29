@@ -119,8 +119,8 @@ pub mod vault {
             }
         }
         if approved == THRESHOLD {
-            **vault_account.lamports.borrow_mut() -= proposal.amount;
-            **recipient.try_borrow_mut_lamports()? += proposal.amount;
+            // **vault_account.lamports.borrow_mut() -= proposal.amount;
+            // **recipient.try_borrow_mut_lamports()? += proposal.amount;
             for i in 0..proposals.created.len() {
                 if proposals.created[i] == proposal.id {
                     proposals.created[i] = proposals.created[proposals.created.len() - 1];
@@ -129,7 +129,7 @@ pub mod vault {
                 }
             }
 
-            proposal.close(signer.to_account_info());
+            // proposal.close(signer.to_account_info());
         }
         Ok(())
     }
